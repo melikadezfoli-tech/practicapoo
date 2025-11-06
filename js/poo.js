@@ -9,21 +9,16 @@ class Libro {constructor(titulo,autor,isbn){
 
             /* Cambia el estado del libro a prestado.*/
                prestar=function(){
-                    if (this._prestado) {
-                    console.log(`El libro "${this.titulo}" ya está prestado.`);
-                    } else {
-                    this._prestado = true;
-                    console.log(`"${this.titulo}" ha sido prestado.`);
+                    if (!this._prestado) {
+                    this._prestado=true;
+                    console.log(`${this.titulo} está prestado.`);
                     }
                 }
 
             /* Cambia el estado del libro a disponible. */
                 devolver=function(){
-                    if (!this._prestado) {
-                    console.log(`El libro "${this.titulo}" ya está disponible.`);
-                    } else {
-                    this._prestado = false;
-                    console.log(`"${this.titulo}" ha sido devuelto.`);
+                    if (this._prestado) {
+                    console.log(`${this.titulo}está disponible.`);
                     }
                 }
 
@@ -35,7 +30,7 @@ class Libro {constructor(titulo,autor,isbn){
 //Se instancia el objeto de la clase
 const libro = new Libro("Cien años de soledad", "Gabriel García Márquez", "11111");
 
-//Ejemplos a ejecutar
+//Ejemplos a probar
 console.log(`Estado inicial: ${libro.getEstado()}`); // "Disponible"
 
 libro.prestar();
@@ -55,35 +50,35 @@ class Biblioteca {constructor(nombre,libro){
                         this.libros = []; //Array para almacenar instancias de libros
                     }
 
-                    agregarLibro=function(libro) {// Verificar si el libro ya existe por ISBN
-                        const existe = this.buscarPorIsbn(libro.isbn);
+                    agregarLibro=function(libro) {                  // Verificar si el libro ya existe por ISBN
+                        const existe = this.buscaIsbn(libro.isbn);
                         if (existe) {
                             console.log(`El libro con ISBN ${libro.isbn} ya existe en la biblioteca.`);
                         } else {
-                            this.libros.push(libro);
-                            console.log(`"${libro.titulo}" añadido a la biblioteca.`);
+                            this.libros.push(libro);//añadimos el elemento con el nuevo libro al array de libros
+                            console.log(`${libro.titulo} añadido a la biblioteca.`);
                         }
                     }
 
-                    buscarPorIsbn=function(isbn) {//buscar un libro por isbn
+                    buscaIsbn=function(isbn) {                                  //buscar un libro por isbn
                         return this.libros.find(libro => libro.isbn === isbn);
                     }
 
                     prestarLibro=function(isbn) {
-                        const libro = this.buscarPorIsbn(isbn);
+                        const libro = this.buscaIsbn(isbn);
                         if (libro) {
-                            libro.prestar();
+                            libro.prestar();//cambiamos el estado del libro a prestado
                         } else {
-                            console.log(`Libro con ISBN ${isbn} no encontrado.`);
+                            console.log(`Libro con ISBN ${isbn} no existe.`);
                         }
                     }
 
                     devolverLibro=function(isbn) {
-                        const libro = this.buscarPorIsbn(isbn);
+                        const libro = this.buscaIsbn(isbn);
                         if (libro) {
-                            libro.devolver();
+                            libro.devolver();//cambia el estado del libro a disponible
                         } else {
-                            console.log(`Libro con ISBN ${isbn} no encontrado.`);
+                            console.log(`Libro con ISBN ${isbn} no existe.`);
                         }
                     }
    
@@ -92,8 +87,8 @@ class Biblioteca {constructor(nombre,libro){
                         if (this.libros.length === 0) {
                             console.log("La biblioteca está vacía.");
                         } else {
-                            this.libros.forEach(libro => {
-                                console.log(`"${libro.titulo}" de ${libro.autor}, ISBN: ${libro.isbn}, Estado: ${libro.getEstado}`);
+                            this.libros.forEach((libro) => {
+                                console.log(`${libro.titulo} de ${libro.autor}, ISBN: ${libro.isbn}, Estado: ${libro.getEstado()}`);
                             });
                         }
                         
